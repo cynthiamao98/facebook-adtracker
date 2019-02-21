@@ -1,7 +1,7 @@
 {
-  "name": "Facebook Connect For Chrome Extension",
+  "name": "Facebook Behavior Tracking",
   "version": "1.0",
-  "description": "This plugin is showing how Facebook Graph API works on Chrome Extension.",
+  "description": "Using Facebook Graph API and DOM scraping to understand Facebook user behavior",
   "background":
   {
     "page":"background.html"
@@ -10,7 +10,7 @@
     "default_popup": "popup.html",
     "default_icon":"facebook.png"
   },
-  "manifest_version":2,
+  "manifest_version":3,
   "permissions": [
     "tabs",
     "http://*.facebook.com/*",
@@ -21,7 +21,10 @@
 			"matches":[
 				"https://*.facebook.com/*"
 			],
-			"js": ["content.js"]
+      "css" : ["content.css"],
+      "js" : ["content.js"],
+      "run_at": "document_idle"
 		}
 	]
+  
 }

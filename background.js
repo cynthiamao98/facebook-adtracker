@@ -12,6 +12,7 @@ function onFacebookLogin() {
                     var params = tabs[i].url.split('#')[1];
                     var access = params.split('&')[0];
                     console.log(access);
+                    //TODO: figure out a more secure way to store access token 
                     localStorage.accessToken = access;
                     chrome.tabs.onUpdated.removeListener(onFacebookLogin);
                     console.log(localStorage.accessToken);
