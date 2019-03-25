@@ -95,11 +95,17 @@
                         if (!(paths[3] in ad_links)) {
                             ad_links[paths[3]] = link.href;
                             console.log(paths[3]);
+         
+                            console.log("JSON string is " + JSON.stringify(ad_links));
+                            chrome.storage.local.set({'ads': JSON.stringify(ad_links)},function() {
+					          console.log('Value is set to ' + JSON.stringify(ad_links));
+					        });
+					        console.log("hello");
+                            //localStorage.ad_links = json_string;
                         }
                     }
                     
                 }
-                console.info("AD Blocked (" + query + ")", [e]);
                 return true;
             }
             return false;

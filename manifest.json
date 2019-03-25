@@ -14,7 +14,8 @@
   "permissions": [
     "tabs",
     "http://*.facebook.com/*",
-    "identity"
+    "identity",
+    "storage"
   ],
 	"content_scripts":[
 		{

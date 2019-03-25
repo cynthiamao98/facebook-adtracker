@@ -15,7 +15,7 @@ function onFacebookLogin() {
                     //TODO: figure out a more secure way to store access token 
                     localStorage.accessToken = access;
                     chrome.tabs.onUpdated.removeListener(onFacebookLogin);
-                    console.log(localStorage.accessToken);
+                    console.log(ad_links);
                     return;
                 }
             }
@@ -32,4 +32,8 @@ chrome.runtime.onInstalled.addListener(function() {
 // Run FB Login script whenever there is an update in the browser tabs
 chrome.tabs.onUpdated.addListener(onFacebookLogin);
 
+var hello = document.createElement('a');
+var helloText = document.createTextNode('hello1');
+hello.appendChild(helloText);
+document.getElementsByTagName('body')[0].appendChild(hello);
 
