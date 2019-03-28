@@ -26,43 +26,14 @@ if (localStorage.accessToken) {
     }
 }
 
-
-function talkToPHP(){
-    $.ajax
-    (
-        {
-            type: "POST",
-            url: "http://localhost:8080/action.php",
-            data: 
-            {               
-                userName: 'JohnDoe',
-                accessToken: "e9nf93jdo1",
-                demographic: "someJSONstring",
-                ads: "no ads yet"
-            },
-            success: function(msg)
-            {
-                alert("Successfully posted!");
-            }//end function
-        }
-    );//End ajax 
-}
-
-
-$('#submit').on('click', function(){
+function postToDB(userdata){
     $.ajax
     (
         {
             type: "POST",
             url: "http://localhost:8080/action.php",
             // dataType:'json',
-            data: 
-            {               
-                userName: "JohnDoe",
-                accessToken: "e9nf93jdo1",
-                demographic: "someJSONstring",
-                ads: "no ads yet"
-            },
+            data: userdata,
             success: function(data, status, xhr){
                 alert(xhr.responseText);
                 return(true);
@@ -74,23 +45,37 @@ $('#submit').on('click', function(){
             }
         }
     );//End ajax 
+    
+}
+
+
+function submitUserData(){
+    var data = {};
+    //First add name
+    data.userName = 'placeholder';
+    //Then add accessToken
+    data.accessToken = localStorage.accessToken;
+    
+    
+    chrome.storage.local.get(null, function(result) {
+        //Then add demographic result
+        data.demographic =result.graphAPI_result;
+        if (result.ads != null){
+            data.ads = JSON.stringify(result.ads);
+        }else{
+            data.ads = "empty";
+        }
+        
+        alert("The final data form is " + JSON.stringify(data));
+        //TODO: return true if data is successfully submitted, false otherwise
+        postToDB(data);
+    });
+}
+
+
+
+
+$('#submit').on('click', function(){
+    //TODO: make this update rather than insert if there's already records
+    submitUserData();
 });
-
-
-
-
-// chrome.storage.onChanged.addListener(function(changes, namespace) {
-//     console.log('Storage content is changed');
-//     for (var key in changes) {
-//       var storageChange = changes[key];
-//       var changeLog = document.createElement('p1');
-//       var logText = document.createTextNode('Storage key "%s" in namespace "%s" changed. ',
-//                   'New value is "%s".',
-//                   key,
-//                   namespace,
-//                   storageChange.newValue);
-//       changeLog.appendChild(logText);
-//       document.getElementsByTagName('body')[0].appendChild(changeLog);
-      
-//     }
-// });
