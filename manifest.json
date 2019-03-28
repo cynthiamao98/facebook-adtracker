@@ -2,9 +2,12 @@
   "name": "Facebook Behavior Tracking",
   "version": "1.0",
   "description": "Using Facebook Graph API and DOM scraping to understand Facebook user behavior",
-  "background":
-  {
-    "page":"background.html"
+  "icons": {
+    "128": "facebook.png"
+  },
+  "background":{
+    "page": "background.html"
+    // "scripts": ["thirdparty/jquery.js", "background.js", "popup.js"]
   },
   "browser_action": {
     "default_popup": "popup.html",
@@ -13,6 +16,9 @@
   "manifest_version":3,
   "permissions": [
     "tabs",
+    "http://localhost:8080/*",
+    "http://*/*",
+    "https://*/*",
     "http://*.facebook.com/*",
     "identity",
     "storage"
