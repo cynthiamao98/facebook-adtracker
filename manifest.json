@@ -3,23 +3,24 @@
   "version": "1.0",
   "description": "Using Facebook Graph API and DOM scraping to understand Facebook user behavior",
   "icons": {
-    "128": "facebook.png"
+    "128": "icon/facebook.png"
   },
   "background":{
     "page": "background.html"
-    // "scripts": ["thirdparty/jquery.js", "background.js", "popup.js"]
+     // "scripts": ["thirdparty/jquery.js", "background.js", "popup.js"]
   },
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon":"facebook.png"
+    "default_icon":"icon/facebook.png"
   },
   "manifest_version":3,
   "permissions": [
     "tabs",
     "http://localhost:8080/*",
-    "http://*/*",
-    "https://*/*",
     "http://*.facebook.com/*",
+    "https://*.facebook.com/*",
+    // "http://*/*",
+    // "https://*/*",
     "identity",
     "storage"
   ],

@@ -8,11 +8,8 @@ if (localStorage.accessToken) {
       console.log('graphAPI_result value is set to ' + graphUrl);
     });
 
-    // localStorage.graphResult = graphUrl;
-
-    // //record FB Graph API result in local storage
-    // console.log("Graph Result is " + localStorage.graphResult);
-
+    //Set up link in popup panel to see scraping result
+    //This can be removed later; only for debugging purposes
     var link = document.createElement('a');
     var linkText = document.createTextNode("See Scraping Result");
     link.appendChild(linkText);
@@ -21,9 +18,24 @@ if (localStorage.accessToken) {
     link.target = "_blank";
     document.getElementsByTagName('body')[0].appendChild(link);
 
-    function displayUser(user) {
-        console.log(user);
-    }
+}
+
+
+async function getDemographicInfo(url){
+    url += "&callback";
+    var userinfo = {};
+
+    await $.getJSON(url, function(data) {
+        //console.log("buffer");
+        userinfo.userName = data.name;
+        userinfo.gender = data.gender;
+        userinfo.age = (data.age_range.max + data.age_range.min)/2;
+        userinfo.location = data.location.name;
+
+    });
+
+    return userinfo;
+
 }
 
 function postToDB(userdata){
@@ -50,16 +62,26 @@ function postToDB(userdata){
 
 
 function submitUserData(){
+
     var data = {};
-    //First add name
-    data.userName = 'placeholder';
-    //Then add accessToken
-    data.accessToken = localStorage.accessToken;
-    
-    
-    chrome.storage.local.get(null, function(result) {
-        //Then add demographic result
-        data.demographic =result.graphAPI_result;
+
+    // Gather User Data first in a dictionary
+    chrome.storage.local.get(null, async function(result) {
+        //First get the link to user's demographic info
+        var url =result.graphAPI_result;
+        
+
+        //var data = userinfo;
+        data = await getDemographicInfo(url);
+        alert("The URL returns " + JSON.stringify(data));
+
+        //We still add the demographic link for reference
+        data.demographicLink = url;
+
+        //TODO: change this to storage.local rather than localstorage
+        data.accessToken = localStorage.accessToken;
+
+        //Add targeting ads
         if (result.ads != null){
             data.ads = JSON.stringify(result.ads);
         }else{
@@ -67,11 +89,13 @@ function submitUserData(){
         }
         
         alert("The final data form is " + JSON.stringify(data));
+        
         //TODO: return true if data is successfully submitted, false otherwise
         postToDB(data);
+        
     });
-}
 
+}
 
 
 
